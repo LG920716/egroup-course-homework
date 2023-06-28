@@ -1,0 +1,3 @@
+作業為在TestBank中新增一個Bank然後分別計算利息
+
+讓Trip實作Rental 並根據TestTrip寫TestRemtal 讓GPS跟不同的Trip可以益起被租用
