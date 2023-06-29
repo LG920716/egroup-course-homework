@@ -3,7 +3,7 @@ import ProductCreate from "../../../components/product/ProductCreate";
 import style from "../../styles/Home.module.css";
 import AddIcon from "@mui/icons-material/Add";
 import { Product } from "../../../interfaces/entities";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   Button,
@@ -16,14 +16,26 @@ import {
   TableContainer,
 } from "@mui/material";
 import MenuBar from "../../../components/ui/MenuBar";
+import axios from "axios";
 
 const ProductList = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [products, setProducts] = useState<Product[]>([
-    { desc: "iPad", price: 20000, stock: 20 },
-    { desc: "iPhone X", price: 30000, stock: 30 },
-  ]);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get("http://localhost:8080/product");
+        const result = response.data;
+        setProducts(result);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
+    console.log(products)
+  }, []);
 
   const addProduct = (product: Product) => {
     setProducts((currProducts) => [...currProducts, product]);

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entity.AddressCount;
 import com.example.demo.entity.JdbcCustomer;
 
-@Repository
 public interface JdbcCustomerDAO {
     public List<JdbcCustomer> findAll();
 

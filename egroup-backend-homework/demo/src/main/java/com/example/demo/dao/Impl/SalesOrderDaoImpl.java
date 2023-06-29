@@ -12,6 +12,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.SalesOrderDao;
 
@@ -19,6 +20,7 @@ import com.example.demo.entity.ProductSales;
 import com.example.demo.entity.SalesOrder;
 import com.example.demo.entity.SalesOrderItem;
 
+@Repository
 public class SalesOrderDaoImpl implements SalesOrderDao {
     @Autowired
     private DataSource Datasource;

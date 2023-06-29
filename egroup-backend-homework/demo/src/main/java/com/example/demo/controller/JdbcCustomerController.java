@@ -38,7 +38,7 @@ public class JdbcCustomerController {
         return jdbcCustomer;
     }
 
-    @GetMapping("/customer/name/{name}")
+    @GetMapping("/customers/name/{name}")
     public List<JdbcCustomer> findJdbcCustomerByName(@PathVariable("name") String name) throws SQLException, Exception {
         List<JdbcCustomer> customers = dao.getNameList(name);
         if (customers.size() == 0) {
@@ -48,7 +48,7 @@ public class JdbcCustomerController {
         return customers;
     }
 
-    @GetMapping(value = ("/customer/order"))
+    @GetMapping(value = ("/customers/order"))
     public List<JdbcCustomer> retrieveJdbcCustomerOrderBy() throws SQLException, Exception {
         List<JdbcCustomer> customers = dao.getWeightOrderedList();
         if (customers.size() == 0) {
@@ -98,12 +98,12 @@ public class JdbcCustomerController {
         return customers;
     }
 
-    @PostMapping("/customer")
+    @PostMapping("/customers")
     public void createJdbcCustomer(@RequestBody JdbcCustomer jdbcCustomer) {
         dao.createJdbcCustomer(jdbcCustomer);
     }
 
-    @PutMapping("/customer/{id}")
+    @PutMapping("/customers/{id}")
     public void updateJdbcCustomer(@RequestBody JdbcCustomer jdbcCustomer, @PathVariable("id") long id)
             throws SQLException {
         if (jdbcCustomer.getId() == 0) {
@@ -115,7 +115,7 @@ public class JdbcCustomerController {
         }
     }
 
-    @DeleteMapping("/customer/{id}")
+    @DeleteMapping("/customers/{id}")
     public void deleteJdbcCustomer(@PathVariable("id") long id) throws SQLException {
         int result = dao.deleteJdbcCustomer(id);
         if (result == 0) {

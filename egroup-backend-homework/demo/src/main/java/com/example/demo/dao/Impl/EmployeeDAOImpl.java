@@ -10,11 +10,13 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.example.demo.dao.EmployeeDAO;
 import com.example.demo.entity.DepartmentCount;
 import com.example.demo.entity.Employee;
 
+@Repository
 public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Autowired
