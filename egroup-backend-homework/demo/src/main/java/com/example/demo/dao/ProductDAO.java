@@ -9,7 +9,7 @@ public interface ProductDAO {
 
     public List<Product> readProduct() throws Exception;
 
-    // public Product updateProduct() throws Exception;
+    public void updateProduct(Product product) throws Exception;
 
     public void deleteProduct(int id) throws Exception;
 }

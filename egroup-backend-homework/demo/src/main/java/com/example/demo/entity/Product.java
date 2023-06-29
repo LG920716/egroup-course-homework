@@ -2,13 +2,15 @@ package com.example.demo.entity;
 
 public class Product {
     private int id;
-    private String desciption;
+    private String description;
     private int price;
     private int stock;
 
-    public Product(int id, String desciption, int price, int stock) {
+    public Product(){};
+
+    public Product(int id, String description, int price, int stock) {
         this.id = id;
-        this.desciption = desciption;
+        this.description = description;
         this.price = price;
         this.stock = stock;
     }
@@ -21,12 +23,12 @@ public class Product {
         this.id = id;
     }
 
-    public String getDesciption() {
-        return this.desciption;
+    public String getDescription() {
+        return this.description;
     }
 
-    public void setDesciption(String desciption) {
-        this.desciption = desciption;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getPrice() {

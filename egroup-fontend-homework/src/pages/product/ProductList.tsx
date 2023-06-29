@@ -24,9 +24,9 @@ const ProductList = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/product");
+        const response = await axios.get("http://localhost:8080/products");
         const result = response.data;
         setProducts(result);
       } catch (error) {
@@ -34,18 +34,43 @@ const ProductList = () => {
       }
     }
     fetchData();
-    console.log(products)
+    console.log(products);
   }, []);
 
-  const addProduct = (product: Product) => {
-    setProducts((currProducts) => [...currProducts, product]);
-    setOpen(false);
+  const addProduct = async (product: Product) => {
+    try {
+      await axios.post("http://localhost:8080/products", product);
+  
+      const response = await axios.get("http://localhost:8080/products");
+      const updatedProducts = response.data;
+      setProducts(updatedProducts);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const deleteProduct = (index: number) => {
-    const temp = [...products];
-    temp.splice(index, 1);
-    setProducts([...temp]);
+  const updateProduct = async (product: Product) => {
+    try {
+      await axios.put("http://localhost:8080/products", product);
+  
+      const response = await axios.get("http://localhost:8080/products");
+      const updatedProducts = response.data;
+      setProducts(updatedProducts);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deleteProduct = async (id: number) => {
+    try {
+      await axios.delete(`http://localhost:8080/products/${id}`);
+  
+      const response = await axios.get("http://localhost:8080/products");
+      const updatedProducts = response.data;
+      setProducts(updatedProducts);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleClickOpen = () => {
@@ -68,10 +93,11 @@ const ProductList = () => {
             {/* spread寫法比較像複製內容 如果a為一陣列 a=b會讓b跟a有一樣的記憶體位置 這樣b的改變也會影響a 所以才去需要...的用法 */}
             {products.map((product, index) => (
               <ProductListItem
-                key={product.desc}
+                key={product.description}
                 index={index}
                 {...product}
                 deleteProduct={deleteProduct}
+                updateProduct={updateProduct}
               />
             ))}
           </TableBody>

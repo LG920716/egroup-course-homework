@@ -26,7 +26,7 @@ public class ProductDAOImpl implements ProductDAO {
         String sql = "INSERT INTO product (description, price, stock) VALUE(?, ?, ?)";
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql);) {
-            stmt.setString(1, product.getDesciption());
+            stmt.setString(1, product.getDescription());
             stmt.setInt(2, product.getPrice());
             stmt.setInt(3, product.getStock());
             stmt.executeUpdate();
@@ -61,11 +61,22 @@ public class ProductDAOImpl implements ProductDAO {
                 rs.getInt("stock"));
     }
 
-    // @Override
-    // public Product updateProduct() throws Exception {
-    // throw new UnsupportedOperationException("Unimplemented method
-    // 'updateProduct'");
-    // }
+    @Override
+    public void updateProduct(Product product) throws Exception {
+        try {
+            Connection conn = dataSource.getConnection();
+            String sql = "UPDATE product SET description=?, price=?, stock=? WHERE id=?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, product.getDescription());
+            stmt.setInt(2, product.getPrice());
+            stmt.setInt(3, product.getStock());
+            stmt.setInt(4, product.getId());
+            stmt.executeUpdate();
+            conn.close();
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 
     @Override
     public void deleteProduct(int id) throws Exception {
