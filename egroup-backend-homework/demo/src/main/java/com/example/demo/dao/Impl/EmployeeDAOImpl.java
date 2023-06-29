@@ -12,6 +12,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.demo.dao.EmployeeDAO;
+import com.example.demo.entity.DepartmentCount;
 import com.example.demo.entity.Employee;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
@@ -114,6 +115,109 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             System.out.println(e);
         }
         return result;
+    }
+
+    @Override
+    public List<Employee> getNameList(String name) throws Exception {
+        List<Employee> employee = new ArrayList<Employee>();
+        String sql = "SELECT id, name, department FROM employee WHERE name LIKE ?";
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);) {
+            stmt.setString(1, "%" + name + "%");
+            try (ResultSet rs = stmt.executeQuery();) {
+                while (rs.next()) {
+                    employee.add(getEmployee(rs));
+                }
+            } catch (Exception e) {
+                throw e;
+            }
+        }
+        return employee;
+    }
+
+    @Override
+    public List<Employee> getGroupByDepartment() throws Exception {
+        List<Employee> employeeList = new ArrayList<Employee>();
+        String sql = "SELECT id, name, department, salary FROM employee GROUP BY department";
+        try(Connection conn = dataSource.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();) {
+            while (rs.next()) {
+                employeeList.add(getEmployee(rs));
+            }
+            conn.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return employeeList;
+    }
+
+    @Override
+    public List<Employee> getSalaryBetween(int lowBound, int upperBound) throws Exception {
+        List<Employee> employee = new ArrayList<Employee>();
+        String sql = "SELECT id, name, department, salary FROM employee WHERE salary BETWEEN ? and ?";
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);) {
+            stmt.setInt(lowBound, upperBound);
+            try (ResultSet rs = stmt.executeQuery();) {
+                while (rs.next()) {
+                    employee.add(getEmployee(rs));
+                }
+            } catch (Exception e) {
+                throw e;
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return employee;
+    }
+
+    @Override
+    public List<String> getDistinctDepartment() throws Exception {
+        List<String> employee = new ArrayList<String>();
+        String sql = "SELECT DISTINCT department FROM employee";
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery();) {
+            while (rs.next()) {
+                employee.add(rs.getString("department"));
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return employee;
+    }
+
+    @Override
+    public List<DepartmentCount> getCountDepartmentPeople() throws Exception {
+        List<DepartmentCount> employee = new ArrayList<DepartmentCount>();
+        String sql = "SELECT department, COUNT(department) FROM employee GROUP BY department";
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery();) {
+            while (rs.next()) {
+                employee.add(new DepartmentCount(rs.getString("sddress"), rs.getInt("COUNT(address)")));
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return employee;
+    }
+
+    @Override
+    public List<String> getDepartmentOnlyOnePerson() throws Exception {
+        List<String> employee = new ArrayList<String>();
+        String sql = "SELECT department FROM employee GROUP BY department HAVING COUNT(department) = 1;";
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery();) {
+            while (rs.next()) {
+                employee.add(rs.getString("department"));
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return employee;    
     }
 
 }

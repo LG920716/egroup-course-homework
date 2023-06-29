@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.demo.dao.EmployeeDAO;
+import com.example.demo.entity.DepartmentCount;
 import com.example.demo.entity.Employee;
 
 @RestController
@@ -66,5 +67,64 @@ public class EmployeeController {
         if (result == 0) {
             throw new SQLException("id不存在");
         }
+    }
+
+    @GetMapping("/employee/name/{name}")
+    public List<Employee> findEmployeeByName(@PathVariable("name") String name) throws SQLException, Exception {
+        List<Employee> customers = dao.getNameList(name);
+        if (customers.size() == 0) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "name:" + name + "並不存在");
+        }
+        return customers;
+    }
+
+    @PutMapping("/employee/deparement/groupby")
+    public void findEmployeeGroupByDepartment() throws SQLException, Exception {
+        try {
+            dao.getGroupByDepartment();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    @GetMapping("/employee/salary/{num1}/{num2}")
+    public List<Employee> getJdbcCustomersWeightBetween(@PathVariable("num1") int num1, @PathVariable("num2") int num2) throws SQLException, Exception{
+        List<Employee> customers = dao.getSalaryBetween(num1, num2);
+        if (customers.size() == 0) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "無資料");
+        }
+        return customers;
+    }
+
+    @GetMapping("/employee/department/distinct")
+    public List<String> getEmployeeDepartmentDistinct() throws SQLException, Exception{
+        List<String> customers = dao.getDistinctDepartment();
+        if (customers.size() == 0) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "無資料");
+        }
+        return customers;
+    }
+
+    @GetMapping("/employee/department/count")
+    public List<DepartmentCount> getJdbcCustomersAddressGroupBy() throws SQLException, Exception{
+        List<DepartmentCount> employee = dao.getCountDepartmentPeople();
+        if (employee.size() == 0) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "無資料");
+        }
+        return employee;
+    }
+
+    @GetMapping("/employee/department/onlyone")
+    public List<String> getDepartmentOnlyOnePerson() throws SQLException, Exception{
+        List<String> customers = dao.getDepartmentOnlyOnePerson();
+        if (customers.size() == 0) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "無資料");
+        }
+        return customers;
     }
 }
